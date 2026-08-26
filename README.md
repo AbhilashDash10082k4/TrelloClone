@@ -1,159 +1,66 @@
-# Turborepo starter
+- The entire thing can be AI Native -
+    - the user comes-signs up- creates orgs -> defines he requirements -> agent spawns up the tasks -> lines them up in different sections based on their states -> take up the tasks from kanban board -> creates the tasks in github -> solve them -> gen PR -> review the PR -> merges them
 
-This Turborepo starter is maintained by the Turborepo core team.
+    - complete agentic SDLC
 
-## Using this example
+- SignUp/ SignIn (in house auth) 
 
-Run the following command:
+- Orgs -> Teams -> Boards (Board specific permissions) 
 
-```sh
-npx create-turbo@latest
-```
+- Dashboard (to show all the boards, their team members, tasks, etc.) 
 
-## What's inside?
+- Tasks (Kanban boards - upcoming, in prog, done) movable tasks 
 
-This Turborepo includes the following packages/apps:
+- Each task (collaborative space for teams to work on -file uploads for the particular task, comments)
 
-### Apps and Packages
+- Admin can add/remove members
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `@next/eslint-plugin-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- At the top of board, the active profile should be visible (websockets) - card movements in real time to be shown
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+- If 2 people starts doing the same task at the same time then whose activity to accept? Like 2 people commenting at the same time (Conflict resolution)
 
-### Utilities
+- Comments to be shown in real time
 
-This Turborepo has some additional tools already setup for you:
+- User connects the project repo (github repo) & creates tasks in the kanban form
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+- AI Solver : takes the tasks -> (creates them in git) solves them -> generates a PR -> reviews the PR -> automatically moves the tasks to in_progress & completed states
 
-### Build
+- DB schema -> Backend api routes -> Frontend
 
-To build all apps and packages, run the following command:
+1. (*packages/db/*) -DB schema- No arrays/JSONs as field types coz difficult to query the data (this is DB normalization)
+- **TABLES**:-
+    - Users -
+        - id, name, email(magic link auth/Google OAuth) , roles, board_assigned, 1-many relation with tasks, many-many relation with Orgs (maybe a separate table name members)
+    - Org 
+        - id, name, description, members (1-many relation with users - separate table named members ), boards_assigned
+    - Members
+        - id, userId (referencing to users table), orgId (referencing to org table), boardId (members assigned to a particular proj(board) )
+        - contains composite primary key
+    - Board (Project)
+        - id, title, description, many-1 relation with an Org, 
+        - members_assigned_to_the_board (many-many relation with Users - 1 board-many users, 1 user-many boards based on user role)
+    - Tasks
+        - id, title, description
+        - boardId (many-1 relation with board)
+        - (many-many relation with users:- 
+            - 1 user-many tasks
+            - 1 task -many users  
+                -> table task_mapping (id, userId, taskId))
+    - Section 
+        - id, title (ENUMS) : state of task - upcoming, in_progres, done -> by default
+        - boardId (which tasks are in which board), 
+        - 1-many relation with tasks (1 section can have many tasks, 1 task can have only 1 section) -> ondelete:"restrict"
+    
+    - Comments - conversation of members on a particular tasks
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+- **Relations**
+    - 1-many for tasks-comments -> 1 tasks can have many comments, 1 comment can belong to only 1 tasks
+    - 1-many for tasks-sections -> 1 tasks can belong to 1 
+    - many-many relation b/w users-orgs-> 1 user many orgs, 1 org -many users
+    - 1-many for boards-tasks -> 1 board can have many tasks
+    - many-many relation b/w users-tasks-> 1 user many tasks, 1 task -many users
 
-```sh
-cd my-turborepo
-turbo build
-```
 
-Without global `turbo`, use your package manager:
+2. *apps/backend*- flow -> api call -> controller -> service -> repository -> DB
 
-```sh
-cd my-turborepo
-npx turbo build
-bun exec turbo build
-bun exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo build --filter=docs
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo build --filter=docs
-bun exec turbo build --filter=docs
-bun exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-bun exec turbo dev
-bun exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-bun exec turbo dev --filter=web
-bun exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-bun exec turbo login
-bun exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-bun exec turbo link
-bun exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+3. *apps/websockets* - create all the real time features (comments , real time card movements, active users)
