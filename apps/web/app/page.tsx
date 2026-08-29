@@ -1,7 +1,5 @@
+import DashboardPage from "./dashboard/page";
+
 export default function Home() {
-  return (
-    <div className="bg-white">
-      <p className="">Hi</p>
-    </div>
-  );
+  return <DashboardPage />;
 }

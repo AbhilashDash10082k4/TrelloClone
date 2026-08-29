@@ -58,6 +58,23 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({
   );
 };
 
+// Main navigation links array
+const mainLinks = [
+  { icon: Home, label: "Home", href: "/dashboard" },
+  { icon: TimelineIcon, label: "Timeline", href: "/timeline" },
+  { icon: Search, label: "Search", href: "/search" },
+  { icon: Settings, label: "Settings", href: "/settings" },
+];
+
+// Priority navigation items
+const priorityLinks = [
+  { icon: AlertCircle, label: "Urgent", href: "/priority/urgent" },
+  { icon: ShieldAlert, label: "High", href: "/priority/high" },
+  { icon: AlertTriangle, label: "Medium", href: "/priority/medium" },
+  { icon: AlertOctagon, label: "Low", href: "/priority/low" },
+  { icon: Layers3, label: "Backlog", href: "/priority/backlog" },
+];
+
 /**
  * Sidebar component for primary navigation, project panels, and priority routes.
  */
@@ -70,23 +87,6 @@ export const Sidebar: React.FC = () => {
   // Panel collapse states
   const [showProjects, setShowProjects] = useState(true);
   const [showPriority, setShowPriority] = useState(true);
-
-  // Main navigation links array
-  const mainLinks = [
-    { icon: Home, label: "Home", href: "/dashboard" },
-    { icon: TimelineIcon, label: "Timeline", href: "/timeline" },
-    { icon: Search, label: "Search", href: "/search" },
-    { icon: Settings, label: "Settings", href: "/settings" },
-  ];
-
-  // Priority navigation items
-  const priorityLinks = [
-    { icon: AlertCircle, label: "Urgent", href: "/priority/urgent" },
-    { icon: ShieldAlert, label: "High", href: "/priority/high" },
-    { icon: AlertTriangle, label: "Medium", href: "/priority/medium" },
-    { icon: AlertOctagon, label: "Low", href: "/priority/low" },
-    { icon: Layers3, label: "Backlog", href: "/priority/backlog" },
-  ];
 
   const sidebarClassNames = `fixed flex flex-col justify-between h-full shadow-xl transition-all duration-300 z-40 bg-white dark:bg-dark-bg border-r border-gray-200 dark:border-stroke-dark overflow-y-auto ${
     isSideBarCollapsed ? "w-0 hidden" : "w-64"
