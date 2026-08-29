@@ -7,7 +7,7 @@ import {
   Provider,
 } from "react-redux";
 import globalReducer from "./index"; //takes the default export from index and calls it globalReducer
-import { api } from "@/state/api";
+import { api } from "./api";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import {
   persistStore,
@@ -69,7 +69,7 @@ export const makeStore = () => {
 
 /* REDUX TYPES */
 export type AppStore = ReturnType<typeof makeStore>;
-export type RootState = ReturnType<AppStore["getState"]>;
+export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = AppStore["dispatch"];
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -80,7 +80,7 @@ export default function StoreProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const storeRef = useRef<AppStore>();
+  const storeRef = useRef<AppStore | null>(null);
   if (!storeRef.current) {
     storeRef.current = makeStore();
     setupListeners(storeRef.current.dispatch);
