@@ -1,28 +1,19 @@
 {
-  "name": "db",
-  "module": "index.ts",
-  "type": "module",
+  "name": "@repo/db",
   "private": true,
-  "devDependencies": {
-    "@types/bun": "latest",
-    "prisma": "7.10.0"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  },
+  "version": "0.0.0",
+  "type": "module",
+  "main": "index.ts",
   "scripts": {
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy"
+    "contract:emit": "prisma contract emit"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "dependencies": {
-    "@prisma/adapter-pg": "^7.10.0",
-    "@prisma/client": "^7.10.0",
-    "dotenv": "^17.4.2",
-    "pg": "^8.23.0"
+    "@prisma/orm-postgres": "^8.0.0-rc.9",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@prisma/cli-engine": "0.2.3",
+    "@types/node": "^22.20.2",
+    "prisma": "^8.0.0-rc.10"
   }
 }
