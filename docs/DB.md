@@ -30,6 +30,7 @@
       - 1 user-many tasks
       - 1 task -many users  
         -> table task_mapping (id, userId, taskId))
+    - many tasks - 1 board and viz a viz
 
   - `Section` (Admin dynamically creates the sections for tasks - no enum)
     - id, title (ENUMS) : state of task - upcoming, in_progres, done -> by default
