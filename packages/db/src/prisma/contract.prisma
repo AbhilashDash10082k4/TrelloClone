@@ -106,7 +106,6 @@ model Board {
   updatedAt   DateTime  @default(now())
   project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   sections    Section[]
-  tasks       Task[]
 }
 
 // Task column section in board
@@ -135,7 +134,6 @@ model Task {
   taskMappings TaskMapping[]
   comments     Comment[]
   attachments  Attachment[]
-  board        Board?        @relation(fields: [boardId], references: [id])
   boardId      String?
 }
 
