@@ -33,7 +33,7 @@ enum Events {
 
 // User entity
 model User {
-  id                 String          @id @default(cuid())
+  id                 String          @id @default(cuid(2))
   name               String?
   email              String          @unique
   createdAt          DateTime        @default(now())
@@ -49,7 +49,7 @@ model User {
 
 // Organization entity
 model Org {
-  id          String      @id @default(cuid())
+  id          String      @id @default(cuid(2))
   name        String
   description String?
   createdAt   DateTime    @default(now())
@@ -60,7 +60,7 @@ model Org {
 
 // Organization membership join table
 model OrgMember {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid(2))
   userId    String
   orgId     String
   role      UserRole
@@ -73,7 +73,7 @@ model OrgMember {
 
 // Project entity within an Organization
 model Project {
-  id             String          @id @default(cuid())
+  id             String          @id @default(cuid(2))
   title          String
   description    String?
   orgId          String
@@ -85,7 +85,7 @@ model Project {
 }
 
 model ProjectMember {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid(2))
   projectId String
   userId    String
   createdAt DateTime @default(now())
@@ -98,7 +98,7 @@ model ProjectMember {
 
 // Board entity within a Project
 model Board {
-  id          String    @id @default(cuid())
+  id          String    @id @default(cuid(2))
   title       String
   description String?
   projectId   String
@@ -111,7 +111,7 @@ model Board {
 
 // Task column section in board
 model Section {
-  id        String     @id @default(cuid())
+  id        String     @id @default(cuid(2))
   status    TaskStatus
   boardId   String
   createdAt DateTime   @default(now())
@@ -122,7 +122,7 @@ model Section {
 
 // Task item entity
 model Task {
-  id           String        @id @default(cuid())
+  id           String        @id @default(cuid(2))
   title        String
   description  String?
   sectionId    String
@@ -141,7 +141,7 @@ model Task {
 
 // Many-to-many mapping between users and assigned tasks
 model TaskMapping {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid(2))
   userId    String
   taskId    String
   createdAt DateTime @default(now())
@@ -153,7 +153,7 @@ model TaskMapping {
 
 // Task comments
 model Comment {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid(2))
   content   String
   taskId    String
   userId    String
@@ -164,7 +164,7 @@ model Comment {
 }
 
 model Attachment {
-  id           String  @id @default(cuid())
+  id           String  @id @default(cuid(2))
   fileURL      String
   fileName     String?
   taskId       String
