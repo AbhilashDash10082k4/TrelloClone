@@ -37,7 +37,7 @@ model User {
   name               String?
   email              String          @unique
   createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  updatedAt          DateTime        @updatedAt()
   authoredTasks      Task[]          @relation("TaskAuthor")
   orgMemberships     OrgMember[]
   taskMappings       TaskMapping[]
@@ -53,7 +53,7 @@ model Org {
   name        String
   description String?
   createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  updatedAt   DateTime    @updatedAt()
   members     OrgMember[]
   projects    Project[]
 }
@@ -78,7 +78,7 @@ model Project {
   description    String?
   orgId          String
   createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  updatedAt      DateTime        @updatedAt()
   org            Org             @relation(fields: [orgId], references: [id], onDelete: Cascade)
   projectMembers ProjectMember[]
   boards         Board[]
@@ -103,7 +103,7 @@ model Board {
   description String?
   projectId   String
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  updatedAt   DateTime  @updatedAt()
   project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   sections    Section[]
   tasks       Task[]
@@ -112,10 +112,10 @@ model Board {
 // Task column section in board
 model Section {
   id        String     @id @default(cuid())
-  title     TaskStatus @default(UPCOMING)
+  status    TaskStatus @default(UPCOMING)
   boardId   String
   createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  updatedAt DateTime   @updatedAt()
   board     Board      @relation(fields: [boardId], references: [id], onDelete: Cascade)
   tasks     Task[]
 }
@@ -125,18 +125,18 @@ model Task {
   id           String        @id @default(cuid())
   title        String
   description  String?
-  boardId      String
   sectionId    String
   createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  updatedAt    DateTime      @updatedAt()
   priority     TaskPriority  @default(MEDIUM)
-  board        Board         @relation(fields: [boardId], references: [id], onDelete: Cascade)
   section      Section       @relation(fields: [sectionId], references: [id], onDelete: Restrict)
   authorId     String
-  author       User          @relation("TaskAuthor", fields: [authorId], references: [id])
+  author       User          @relation("TaskAuthor", fields: [authorId], references: [id], onDelete: Restrict)
   taskMappings TaskMapping[]
   comments     Comment[]
   attachments  Attachment[]
+  board        Board?        @relation(fields: [boardId], references: [id])
+  boardId      String?
 }
 
 // Many-to-many mapping between users and assigned tasks
@@ -158,7 +158,7 @@ model Comment {
   taskId    String
   userId    String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt()
   task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -169,6 +169,6 @@ model Attachment {
   fileName     String?
   taskId       String
   uploadedById String
-  task         Task    @relation(fields: [taskId], references: [id])
-  uploadedBy   User    @relation(fields: [uploadedById], references: [id])
+  task         Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  uploadedBy   User    @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
 }
