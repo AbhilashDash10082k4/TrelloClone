@@ -17,10 +17,6 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Check migrations
-        working-directory: packages/db
-        run: bunx prisma migration check
-
       - name: Check migration status
         working-directory: packages/db
         env:
