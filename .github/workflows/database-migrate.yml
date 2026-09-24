@@ -3,7 +3,6 @@ name: Database Migration
 on:
   workflow_dispatch:
 
-
 jobs:
   migrate:
     runs-on: ubuntu-latest
@@ -17,6 +16,16 @@ jobs:
 
       - name: Install dependencies
         run: bun install
+
+      - name: Check migrations
+        working-directory: packages/db
+        run: bunx prisma migration check
+
+      - name: Show migration path
+        working-directory: packages/db
+        env:
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+        run: bunx prisma db migrate --show --db "$DIRECT_URL"
 
       - name: Apply migrations
         working-directory: packages/db
