@@ -2,11 +2,7 @@ name: Database Migration
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "packages/db/migrations/**"
+
 
 jobs:
   migrate:
