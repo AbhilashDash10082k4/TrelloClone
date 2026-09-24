@@ -21,12 +21,6 @@ jobs:
         working-directory: packages/db
         run: bunx prisma migration check
 
-      - name: Show migration path
-        working-directory: packages/db
-        env:
-          DIRECT_URL: ${{ secrets.DIRECT_URL }}
-        run: bunx prisma db migrate --show --db "$DIRECT_URL"
-
       - name: Apply migrations
         working-directory: packages/db
         env:
