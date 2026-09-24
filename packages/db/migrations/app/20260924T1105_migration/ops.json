@@ -1,0 +1,128 @@
+[
+  {
+    "id": "dropDefault.project.updatedAt",
+    "label": "Drop default on \"project\".\"updatedAt\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "updatedAt",
+        "table": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"updatedAt\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "updatedAt"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop default on \"updatedAt\"",
+        "sql": "ALTER TABLE \"public\".\"project\" ALTER COLUMN \"updatedAt\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"updatedAt\" has no default",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "updatedAt"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.project.endDate",
+    "label": "Add column \"endDate\" to \"project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "endDate",
+        "table": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"endDate\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "endDate"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"endDate\"",
+        "sql": "ALTER TABLE \"public\".\"project\" ADD COLUMN \"endDate\" timestamptz"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"endDate\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "endDate"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.project.startDate",
+    "label": "Add column \"startDate\" to \"project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "startDate",
+        "table": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"startDate\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "startDate"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"startDate\"",
+        "sql": "ALTER TABLE \"public\".\"project\" ADD COLUMN \"startDate\" timestamptz"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"startDate\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "startDate"
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "name": "Agentic Trello-Clone",
+    "description": "Current Project",
+    "startDate": "2023-01-01T00:00:00Z",
+    "endDate": "2023-12-31T00:00:00Z"
+  },
+  {
+    "id": 2,
+    "name": "AI-Voice Saas",
+    "description": "Eeven Labs Clone",
+    "startDate": "2023-02-01T00:00:00Z",
+    "endDate": "2023-10-15T00:00:00Z"
+  },
+  {
+    "id": 3,
+    "name": "Cursor-Clone",
+    "description": "$60 B",
+    "startDate": "2023-03-05T00:00:00Z",
+    "endDate": "2024-03-05T00:00:00Z"
+  },
+  {
+    "id": 4,
+    "name": "My-Own-Claude-Code",
+    "description": "nightmare for Dario",
+    "startDate": "2023-01-20T00:00:00Z",
+    "endDate": "2023-09-20T00:00:00Z"
+  },
+  {
+    "id": 5,
+    "name": "AI-Code-Editor",
+    "description": "Practice Project",
+    "startDate": "2023-04-15T00:00:00Z",
+    "endDate": "2023-11-30T00:00:00Z"
+  },
+  {
+    "id": 6,
+    "name": "Agentic-Whiteboard",
+    "description": "Personal Rough Notebook",
+    "startDate": "2023-02-25T00:00:00Z",
+    "endDate": "2023-08-25T00:00:00Z"
+  },
+  {
+    "id": 7,
+    "name": "n8n",
+    "description": "Will use in freelancing for automation",
+    "startDate": "2023-05-10T00:00:00Z",
+    "endDate": "2023-12-10T00:00:00Z"
+  }
+]
