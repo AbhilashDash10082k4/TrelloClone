@@ -11,6 +11,8 @@
     "migration:plan": "prisma migration plan",
     "migration:status": "prisma migration status",
     "db:migrate": "prisma db migrate --advance-ref db",
+    "migration:graph": "prisma db migration graph",
+    "migration:check": "prisma db migration check",
     "db:verify": "prisma db verify",
     "check-types": "tsc --noEmit"
   },
