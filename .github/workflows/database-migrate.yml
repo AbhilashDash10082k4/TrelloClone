@@ -20,10 +20,12 @@ jobs:
       - name: Check migrations
         working-directory: packages/db
         run: bunx prisma migration check
-      
+
       - name: Check migration status
         working-directory: packages/db
-        run: bunx prisma migration status
+        env:
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+        run: bunx prisma migration status --db "$DIRECT_URL"
 
       - name: Apply migrations
         working-directory: packages/db
