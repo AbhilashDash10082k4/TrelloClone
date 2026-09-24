@@ -20,6 +20,10 @@ jobs:
       - name: Check migrations
         working-directory: packages/db
         run: bunx prisma migration check
+      
+      - name: Check migration status
+        working-directory: packages/db
+        run: bunx prisma migration status
 
       - name: Apply migrations
         working-directory: packages/db
