@@ -31,7 +31,7 @@ jobs:
         working-directory: packages/db
         env:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
-        run: bunx prisma db migrate --db "$DIRECT_URL"
+        run: bunx prisma db migrate --db "$DIRECT_URL" --advance-ref db
 
       - name: Verify database
         working-directory: packages/db
