@@ -3,34 +3,136 @@ name: Database Migration
 on:
   workflow_dispatch:
 
+# Prevent two production migrations from running simultaneously.
+concurrency:
+  group: production-database-migration
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
 jobs:
   migrate:
+    name: Apply database migrations
     runs-on: ubuntu-latest
 
+    timeout-minutes: 15
+
+    environment:
+      name: production
+
     steps:
+      # ---------------------------------------------------------
+      # 1. Checkout exact commit
+      # ---------------------------------------------------------
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
+      # ---------------------------------------------------------
+      # 2. Setup Bun
+      # ---------------------------------------------------------
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
 
+      # ---------------------------------------------------------
+      # 3. Install EXACT dependencies from lockfile
+      # ---------------------------------------------------------
       - name: Install dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
 
+      # ---------------------------------------------------------
+      # 4. Validate Prisma migration artifacts
+      # ---------------------------------------------------------
+      - name: Check migration files
+        working-directory: packages/db
+        run: bunx prisma migration check
+
+      # ---------------------------------------------------------
+      # 5. Fail if placeholder migrations exist
+      # ---------------------------------------------------------
+      - name: Fail on unfilled placeholders
+        working-directory: packages/db
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if grep -R -n --include="migration.ts" "placeholder(" migrations/app; then
+            echo "::error::Found migration.ts containing placeholder(...)."
+            echo "::error::Fill the migration locally, recompile it, commit migration.ts + ops.json, then rerun."
+            exit 1
+          fi
+
+      # ---------------------------------------------------------
+      # 6. Check database migration status
+      # ---------------------------------------------------------
       - name: Check migration status
         working-directory: packages/db
         env:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
-        run: bunx prisma migration status --db "$DIRECT_URL"
+        run: |
+          bunx prisma migration status \
+            --db "$DIRECT_URL" \
+            --ascii
 
+      # ---------------------------------------------------------
+      # 7. Show migration history
+      # ---------------------------------------------------------
+      - name: Check applied migration history
+        working-directory: packages/db
+        env:
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+        run: |
+          bunx prisma migration log \
+            --db "$DIRECT_URL"
+
+      # ---------------------------------------------------------
+      # 8. PREVIEW exactly what will run
+      # ---------------------------------------------------------
+      - name: Preview pending migrations
+        working-directory: packages/db
+        env:
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+        run: |
+          bunx prisma db migrate \
+            --show \
+            --db "$DIRECT_URL"
+
+      # ---------------------------------------------------------
+      # 9. Apply migrations
+      # ---------------------------------------------------------
       - name: Apply migrations
         working-directory: packages/db
         env:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
-        run: bunx prisma db migrate --db "$DIRECT_URL" --advance-ref db
+        run: |
+          bunx prisma db migrate \
+            --db "$DIRECT_URL" \
+            --advance-ref db
 
+      # ---------------------------------------------------------
+      # 10. Confirm migration state after deployment
+      # ---------------------------------------------------------
+      - name: Verify migration status
+        working-directory: packages/db
+        env:
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+        run: |
+          bunx prisma migration status \
+            --db "$DIRECT_URL" \
+            --ascii
+
+      # ---------------------------------------------------------
+      # 11. Verify actual DB schema + marker
+      # ---------------------------------------------------------
       - name: Verify database
         working-directory: packages/db
         env:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
-        run: bunx prisma db verify --db "$DIRECT_URL"
+        run: |
+          bunx prisma db verify \
+            --db "$DIRECT_URL" \
+            --strict
