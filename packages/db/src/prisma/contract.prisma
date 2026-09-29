@@ -65,7 +65,7 @@ model OrgMember {
   userId    String
   orgId     String
   role      UserRole
-  createdAt DateTime @default(now())
+  createdAt temporal.createdAt()
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   org       Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
 
@@ -90,7 +90,7 @@ model ProjectMember {
   id        String   @id @default(cuid(2))
   projectId String
   userId    String
-  createdAt DateTime @default(now())
+  createdAt temporal.createdAt()
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
