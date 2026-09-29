@@ -2,11 +2,12 @@
   "name": "Trello",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "dev": "bun run --filter web dev",
+    "build": "bun run --filter database contract:emit && bun run --filter web build",
+    "start": "bun run --filter web start",
+    "db:init": "bun run --filter database db:init",
+    "db:update": "bun run --filter database db:update",
+    "seed": "bun run --filter database db:seed"
   },
   "devDependencies": {
     "@types/node": "^26.3.0",

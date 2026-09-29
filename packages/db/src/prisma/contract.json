@@ -4,47 +4,47 @@
   "target": "postgres",
   "profileHash": "3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2",
   "roots": {
-    "attachment": {
+    "Attachment": {
       "model": "Attachment",
       "namespace": "public"
     },
-    "board": {
+    "Board": {
       "model": "Board",
       "namespace": "public"
     },
-    "comment": {
+    "Comment": {
       "model": "Comment",
       "namespace": "public"
     },
-    "org": {
+    "Org": {
       "model": "Org",
       "namespace": "public"
     },
-    "orgMember": {
+    "OrgMember": {
       "model": "OrgMember",
       "namespace": "public"
     },
-    "project": {
+    "Project": {
       "model": "Project",
       "namespace": "public"
     },
-    "projectMember": {
+    "ProjectMember": {
       "model": "ProjectMember",
       "namespace": "public"
     },
-    "section": {
+    "Section": {
       "model": "Section",
       "namespace": "public"
     },
-    "task": {
+    "Task": {
       "model": "Task",
       "namespace": "public"
     },
-    "taskMapping": {
+    "TaskMapping": {
       "model": "TaskMapping",
       "namespace": "public"
     },
-    "user": {
+    "User": {
       "model": "User",
       "namespace": "public"
     }
@@ -242,7 +242,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "attachment"
+              "table": "Attachment"
             }
           },
           "Board": {
@@ -345,7 +345,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "board"
+              "table": "Board"
             }
           },
           "Comment": {
@@ -449,7 +449,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "comment"
+              "table": "Comment"
             }
           },
           "Org": {
@@ -541,7 +541,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "org"
+              "table": "Org"
             }
           },
           "OrgMember": {
@@ -641,7 +641,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "orgMember"
+              "table": "OrgMember"
             }
           },
           "Project": {
@@ -779,7 +779,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "project"
+              "table": "Project"
             }
           },
           "ProjectMember": {
@@ -863,7 +863,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "projectMember"
+              "table": "ProjectMember"
             }
           },
           "Section": {
@@ -962,7 +962,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "section"
+              "table": "Section"
             }
           },
           "Task": {
@@ -1147,7 +1147,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "task"
+              "table": "Task"
             }
           },
           "TaskMapping": {
@@ -1241,7 +1241,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "taskMapping"
+              "table": "TaskMapping"
             }
           },
           "User": {
@@ -1403,7 +1403,7 @@
                 }
               },
               "namespaceId": "public",
-              "table": "user"
+              "table": "User"
             }
           }
         }
@@ -1415,7 +1415,7 @@
       "public": {
         "entries": {
           "table": {
-            "attachment": {
+            "Attachment": {
               "columns": {
                 "fileName": {
                   "codecId": "pg/text@1",
@@ -1451,14 +1451,14 @@
                       "taskId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "attachment"
+                    "tableName": "Attachment"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "task"
+                    "tableName": "Task"
                   }
                 },
                 {
@@ -1468,14 +1468,14 @@
                       "uploadedById"
                     ],
                     "namespaceId": "public",
-                    "tableName": "attachment"
+                    "tableName": "Attachment"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "user"
+                    "tableName": "User"
                   }
                 }
               ],
@@ -1484,16 +1484,16 @@
                   "columns": [
                     "taskId"
                   ],
-                  "name": "attachment_taskId_idx_4965c936",
-                  "prefix": "attachment_taskId_idx",
+                  "name": "Attachment_taskId_idx_4965c936",
+                  "prefix": "Attachment_taskId_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "uploadedById"
                   ],
-                  "name": "attachment_uploadedById_idx_b92fad21",
-                  "prefix": "attachment_uploadedById_idx",
+                  "name": "Attachment_uploadedById_idx_b92fad21",
+                  "prefix": "Attachment_uploadedById_idx",
                   "unique": false
                 }
               ],
@@ -1504,14 +1504,10 @@
               },
               "uniques": []
             },
-            "board": {
+            "Board": {
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -1549,14 +1545,14 @@
                       "projectId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "board"
+                    "tableName": "Board"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "project"
+                    "tableName": "Project"
                   }
                 }
               ],
@@ -1565,8 +1561,8 @@
                   "columns": [
                     "projectId"
                   ],
-                  "name": "board_projectId_idx_a96e4d92",
-                  "prefix": "board_projectId_idx",
+                  "name": "Board_projectId_idx_a96e4d92",
+                  "prefix": "Board_projectId_idx",
                   "unique": false
                 }
               ],
@@ -1577,7 +1573,7 @@
               },
               "uniques": []
             },
-            "comment": {
+            "Comment": {
               "columns": {
                 "content": {
                   "codecId": "pg/text@1",
@@ -1586,10 +1582,6 @@
                 },
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -1622,14 +1614,14 @@
                       "taskId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "comment"
+                    "tableName": "Comment"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "task"
+                    "tableName": "Task"
                   }
                 },
                 {
@@ -1639,14 +1631,14 @@
                       "userId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "comment"
+                    "tableName": "Comment"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "user"
+                    "tableName": "User"
                   }
                 }
               ],
@@ -1655,16 +1647,16 @@
                   "columns": [
                     "taskId"
                   ],
-                  "name": "comment_taskId_idx_4965c936",
-                  "prefix": "comment_taskId_idx",
+                  "name": "Comment_taskId_idx_4965c936",
+                  "prefix": "Comment_taskId_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "userId"
                   ],
-                  "name": "comment_userId_idx_a489d58a",
-                  "prefix": "comment_userId_idx",
+                  "name": "Comment_userId_idx_a489d58a",
+                  "prefix": "Comment_userId_idx",
                   "unique": false
                 }
               ],
@@ -1675,14 +1667,10 @@
               },
               "uniques": []
             },
-            "org": {
+            "Org": {
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -1716,21 +1704,17 @@
               },
               "uniques": []
             },
-            "orgMember": {
+            "OrgMember": {
               "checks": [
                 {
                   "expression": "\"role\" IN ('ADMIN', 'MEMBER')",
-                  "name": "orgMember_role_check_ddb31015",
-                  "prefix": "orgMember_role_check"
+                  "name": "OrgMember_role_check_ddb31015",
+                  "prefix": "OrgMember_role_check"
                 }
               ],
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -1769,14 +1753,14 @@
                       "userId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "orgMember"
+                    "tableName": "OrgMember"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "user"
+                    "tableName": "User"
                   }
                 },
                 {
@@ -1786,14 +1770,14 @@
                       "orgId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "orgMember"
+                    "tableName": "OrgMember"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "org"
+                    "tableName": "Org"
                   }
                 }
               ],
@@ -1802,16 +1786,16 @@
                   "columns": [
                     "orgId"
                   ],
-                  "name": "orgMember_orgId_idx_c5e5aabe",
-                  "prefix": "orgMember_orgId_idx",
+                  "name": "OrgMember_orgId_idx_c5e5aabe",
+                  "prefix": "OrgMember_orgId_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "userId"
                   ],
-                  "name": "orgMember_userId_idx_a489d58a",
-                  "prefix": "orgMember_userId_idx",
+                  "name": "OrgMember_userId_idx_a489d58a",
+                  "prefix": "OrgMember_userId_idx",
                   "unique": false
                 }
               ],
@@ -1829,14 +1813,10 @@
                 }
               ]
             },
-            "project": {
+            "Project": {
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -1884,14 +1864,14 @@
                       "orgId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "project"
+                    "tableName": "Project"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "org"
+                    "tableName": "Org"
                   }
                 }
               ],
@@ -1900,8 +1880,8 @@
                   "columns": [
                     "orgId"
                   ],
-                  "name": "project_orgId_idx_c5e5aabe",
-                  "prefix": "project_orgId_idx",
+                  "name": "Project_orgId_idx_c5e5aabe",
+                  "prefix": "Project_orgId_idx",
                   "unique": false
                 }
               ],
@@ -1912,14 +1892,10 @@
               },
               "uniques": []
             },
-            "projectMember": {
+            "ProjectMember": {
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -1947,14 +1923,14 @@
                       "projectId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "projectMember"
+                    "tableName": "ProjectMember"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "project"
+                    "tableName": "Project"
                   }
                 },
                 {
@@ -1964,14 +1940,14 @@
                       "userId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "projectMember"
+                    "tableName": "ProjectMember"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "user"
+                    "tableName": "User"
                   }
                 }
               ],
@@ -1980,16 +1956,16 @@
                   "columns": [
                     "projectId"
                   ],
-                  "name": "projectMember_projectId_idx_a96e4d92",
-                  "prefix": "projectMember_projectId_idx",
+                  "name": "ProjectMember_projectId_idx_a96e4d92",
+                  "prefix": "ProjectMember_projectId_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "userId"
                   ],
-                  "name": "projectMember_userId_idx_a489d58a",
-                  "prefix": "projectMember_userId_idx",
+                  "name": "ProjectMember_userId_idx_a489d58a",
+                  "prefix": "ProjectMember_userId_idx",
                   "unique": false
                 }
               ],
@@ -2007,12 +1983,12 @@
                 }
               ]
             },
-            "section": {
+            "Section": {
               "checks": [
                 {
                   "expression": "\"status\" IN ('UPCOMING', 'IN_PROGRESS', 'DONE')",
-                  "name": "section_status_check_390acd24",
-                  "prefix": "section_status_check"
+                  "name": "Section_status_check_390acd24",
+                  "prefix": "Section_status_check"
                 }
               ],
               "columns": {
@@ -2023,10 +1999,6 @@
                 },
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -2060,14 +2032,14 @@
                       "boardId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "section"
+                    "tableName": "Section"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "board"
+                    "tableName": "Board"
                   }
                 }
               ],
@@ -2076,8 +2048,8 @@
                   "columns": [
                     "boardId"
                   ],
-                  "name": "section_boardId_idx_74a7b59d",
-                  "prefix": "section_boardId_idx",
+                  "name": "Section_boardId_idx_74a7b59d",
+                  "prefix": "Section_boardId_idx",
                   "unique": false
                 }
               ],
@@ -2088,12 +2060,12 @@
               },
               "uniques": []
             },
-            "task": {
+            "Task": {
               "checks": [
                 {
                   "expression": "\"priority\" IN ('LOW', 'MEDIUM', 'HIGH', 'URGENT')",
-                  "name": "task_priority_check_8918b779",
-                  "prefix": "task_priority_check"
+                  "name": "Task_priority_check_8918b779",
+                  "prefix": "Task_priority_check"
                 }
               ],
               "columns": {
@@ -2109,10 +2081,6 @@
                 },
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -2161,14 +2129,14 @@
                       "sectionId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "task"
+                    "tableName": "Task"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "section"
+                    "tableName": "Section"
                   }
                 },
                 {
@@ -2178,14 +2146,14 @@
                       "authorId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "task"
+                    "tableName": "Task"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "user"
+                    "tableName": "User"
                   }
                 }
               ],
@@ -2194,16 +2162,16 @@
                   "columns": [
                     "authorId"
                   ],
-                  "name": "task_authorId_idx_e47547ed",
-                  "prefix": "task_authorId_idx",
+                  "name": "Task_authorId_idx_e47547ed",
+                  "prefix": "Task_authorId_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "sectionId"
                   ],
-                  "name": "task_sectionId_idx_5d1ea56b",
-                  "prefix": "task_sectionId_idx",
+                  "name": "Task_sectionId_idx_5d1ea56b",
+                  "prefix": "Task_sectionId_idx",
                   "unique": false
                 }
               ],
@@ -2214,14 +2182,10 @@
               },
               "uniques": []
             },
-            "taskMapping": {
+            "TaskMapping": {
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -2254,14 +2218,14 @@
                       "userId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "taskMapping"
+                    "tableName": "TaskMapping"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "user"
+                    "tableName": "User"
                   }
                 },
                 {
@@ -2271,14 +2235,14 @@
                       "taskId"
                     ],
                     "namespaceId": "public",
-                    "tableName": "taskMapping"
+                    "tableName": "TaskMapping"
                   },
                   "target": {
                     "columns": [
                       "id"
                     ],
                     "namespaceId": "public",
-                    "tableName": "task"
+                    "tableName": "Task"
                   }
                 }
               ],
@@ -2287,16 +2251,16 @@
                   "columns": [
                     "taskId"
                   ],
-                  "name": "taskMapping_taskId_idx_4965c936",
-                  "prefix": "taskMapping_taskId_idx",
+                  "name": "TaskMapping_taskId_idx_4965c936",
+                  "prefix": "TaskMapping_taskId_idx",
                   "unique": false
                 },
                 {
                   "columns": [
                     "userId"
                   ],
-                  "name": "taskMapping_userId_idx_a489d58a",
-                  "prefix": "taskMapping_userId_idx",
+                  "name": "TaskMapping_userId_idx_a489d58a",
+                  "prefix": "TaskMapping_userId_idx",
                   "unique": false
                 }
               ],
@@ -2314,14 +2278,10 @@
                 }
               ]
             },
-            "user": {
+            "User": {
               "columns": {
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
                   "nativeType": "timestamptz",
                   "nullable": false
                 },
@@ -2413,10 +2373,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "7f22a2fcf8dc3a88ac4961a30b043055b12c550f198f081bc40f373f9ddbf11c"
+    "storageHash": "817cb0390fac6f55c2d505b3c1eda25b395330adb13b608b585b58d42c6f960f"
   },
   "execution": {
-    "executionHash": "a6ac4db14f59cc07f2fd063e3b590ea702c078d975db1b5cbe8fbbc6bd7a3818",
+    "executionHash": "95a444dbdf33ec6a1763a62e5219cdbefda95f74dbd938a1a4725766676b2d30",
     "mutations": {
       "defaults": [
         {
@@ -2427,7 +2387,18 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "attachment"
+            "table": "Attachment"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "createdAt",
+            "namespace": "public",
+            "table": "Board"
           }
         },
         {
@@ -2438,7 +2409,7 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "board"
+            "table": "Board"
           }
         },
         {
@@ -2453,7 +2424,18 @@
           "ref": {
             "column": "updatedAt",
             "namespace": "public",
-            "table": "board"
+            "table": "Board"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "createdAt",
+            "namespace": "public",
+            "table": "Comment"
           }
         },
         {
@@ -2464,7 +2446,7 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "comment"
+            "table": "Comment"
           }
         },
         {
@@ -2479,7 +2461,18 @@
           "ref": {
             "column": "updatedAt",
             "namespace": "public",
-            "table": "comment"
+            "table": "Comment"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "createdAt",
+            "namespace": "public",
+            "table": "Org"
           }
         },
         {
@@ -2490,7 +2483,7 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "org"
+            "table": "Org"
           }
         },
         {
@@ -2505,7 +2498,18 @@
           "ref": {
             "column": "updatedAt",
             "namespace": "public",
-            "table": "org"
+            "table": "Org"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "createdAt",
+            "namespace": "public",
+            "table": "OrgMember"
           }
         },
         {
@@ -2516,7 +2520,18 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "orgMember"
+            "table": "OrgMember"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "createdAt",
+            "namespace": "public",
+            "table": "Project"
           }
         },
         {
@@ -2527,7 +2542,7 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "project"
+            "table": "Project"
           }
         },
         {
@@ -2542,7 +2557,18 @@
           "ref": {
             "column": "updatedAt",
             "namespace": "public",
-            "table": "project"
+            "table": "Project"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "createdAt",
+            "namespace": "public",
+            "table": "ProjectMember"
           }
         },
         {
@@ -2553,7 +2579,18 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "projectMember"
+            "table": "ProjectMember"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "createdAt",
+            "namespace": "public",
+            "table": "Section"
           }
         },
         {
@@ -2564,7 +2601,7 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "section"
+            "table": "Section"
           }
         },
         {
@@ -2579,7 +2616,18 @@
           "ref": {
             "column": "updatedAt",
             "namespace": "public",
-            "table": "section"
+            "table": "Section"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "createdAt",
+            "namespace": "public",
+            "table": "Task"
           }
         },
         {
@@ -2590,7 +2638,7 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "task"
+            "table": "Task"
           }
         },
         {
@@ -2605,7 +2653,18 @@
           "ref": {
             "column": "updatedAt",
             "namespace": "public",
-            "table": "task"
+            "table": "Task"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "createdAt",
+            "namespace": "public",
+            "table": "TaskMapping"
           }
         },
         {
@@ -2616,7 +2675,7 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "taskMapping"
+            "table": "TaskMapping"
           }
         },
         {
@@ -2631,7 +2690,18 @@
           "ref": {
             "column": "updatedAt",
             "namespace": "public",
-            "table": "taskMapping"
+            "table": "TaskMapping"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "instantNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "createdAt",
+            "namespace": "public",
+            "table": "User"
           }
         },
         {
@@ -2642,7 +2712,7 @@
           "ref": {
             "column": "id",
             "namespace": "public",
-            "table": "user"
+            "table": "User"
           }
         },
         {
@@ -2657,7 +2727,7 @@
           "ref": {
             "column": "updatedAt",
             "namespace": "public",
-            "table": "user"
+            "table": "User"
           }
         }
       ]
@@ -2676,6 +2746,8 @@
       "checkConstraint": true,
       "defaultInInsert": true,
       "enums": true,
+      "insertOnConflictSkip": true,
+      "insertOnConflictWithoutTarget": true,
       "lateral": true,
       "returning": true,
       "scalarList": true
