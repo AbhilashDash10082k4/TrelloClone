@@ -21,7 +21,7 @@
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/adapter-ppg": "^7.10.0",
     "@prisma/cli-engine": "^0.6.1",
-    "@prisma/orm-postgres": "^8.0.0-rc.12",
+    "@prisma/orm-postgres": "8.0.0-rc.13",
     "@prisma/ppg": "^1.0.1",
     "dotenv": "^18.0.4",
     "pg": "^8.23.0",
