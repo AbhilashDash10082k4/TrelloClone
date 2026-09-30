@@ -20,11 +20,9 @@ const apiRoutes = Router();
 app.get("/", (req, res) => {
   res.json({ message: "Hello" });
 });
-apiRoutes.use(projectRoutes);
 
-// Mount on /api and root /
-app.use("/api", apiRoutes);
-app.use("/", apiRoutes);
+app.use("/projects", projectRoutes);
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
