@@ -1,10 +1,11 @@
 import { db } from "@repo/db";
+import { Temporal } from "temporal-polyfill";
 
 interface DTO {
   title: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: Temporal.Instant;
+  endDate: Temporal.Instant;
   orgId: string;
 }
 export class ProjectService {
