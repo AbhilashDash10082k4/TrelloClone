@@ -1,10 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import projectService from "./project.service";
 import { Temporal } from "temporal-polyfill";
-interface Params {
-  req: Request;
-  res: Response;
-}
+
 export class ProjectController {
   async getAllProjects(req: Request, res: Response) {
     try {
@@ -16,16 +13,15 @@ export class ProjectController {
   }
 
   async createProject(req: Request, res: Response) {
-    const { title, description, startDate, endDate, orgId } = req.body;
+    const { title, description, startDate, endDate } = req.body;
     const data = {
       title,
       description,
       startDate: Temporal.Instant.from(startDate),
       endDate: Temporal.Instant.from(endDate),
-      orgId,
     };
     try {
-      const newProject = await projectService.createProject(data);
+      await projectService.createProject(data);
       res.status(201).json({ message: data });
     } catch (error: any) {
       res

@@ -6,7 +6,6 @@ interface DTO {
   description: string;
   startDate: Temporal.Instant;
   endDate: Temporal.Instant;
-  orgId: string;
 }
 export class ProjectService {
   async getAllProjects() {
@@ -18,7 +17,6 @@ export class ProjectService {
       description: data.description,
       startDate: data.startDate,
       endDate: data.endDate,
-      orgId: data.orgId,
     });
   }
 }
