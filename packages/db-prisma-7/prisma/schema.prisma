@@ -1,0 +1,189 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// use prisma-8
+// User roles in system & organizations
+enum UserRole {
+  ADMIN
+  MEMBER
+}
+
+// Default section status states
+enum TaskStatus {
+  UPCOMING
+  IN_PROGRESS
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum Events {
+  CARD_CREATED
+  CARD_UPDATED
+  CARD_MOVED
+  CARD_DELETED
+  LIST_CREATED
+  LIST_MOVED
+  COMMENT_ADDED
+  MEMBER_ASSIGNED
+  LABEL_CHANGED
+  CHECKLIST_UPDATED
+}
+
+// User entity
+model User {
+  id                 String          @id @default(cuid(2))
+  name               String?
+  email              String          @unique
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  authoredTasks      Task[]          @relation("TaskAuthor")
+  orgMemberships     OrgMember[]
+  taskMappings       TaskMapping[]
+  comments           Comment[]
+  profilePictureUrl  String?
+  attachments        Attachment[]
+  projectMemberships ProjectMember[]
+}
+
+// Organization entity
+model Org {
+  id          String      @id @default(cuid(2))
+  name        String
+  description String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  members     OrgMember[]
+  projects    Project[]
+}
+
+// Organization membership join table
+model OrgMember {
+  id        String   @id @default(cuid(2))
+  userId    String
+  orgId     String
+  role      UserRole
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org       Org      @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId])
+}
+
+model Project {
+  id             String          @id @default(cuid(2))
+  title          String
+  description    String?
+  startDate      DateTime?
+  endDate        DateTime?
+  orgId          String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  org            Org             @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  projectMembers ProjectMember[]
+  boards         Board[]
+}
+
+model ProjectMember {
+  id        String   @id @default(cuid(2))
+  projectId String
+  userId    String
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+}
+
+// Board entity within a Project
+model Board {
+  id          String    @id @default(cuid(2))
+  title       String
+  description String?
+  projectId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  sections    Section[]
+}
+
+// Task column section in board
+model Section {
+  id        String     @id @default(cuid(2))
+  status    TaskStatus
+  boardId   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  board     Board      @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  tasks     Task[]
+}
+
+// Task item entity
+model Task {
+  id           String        @id @default(cuid(2))
+  title        String
+  description  String?
+  sectionId    String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  priority     TaskPriority
+  section      Section       @relation(fields: [sectionId], references: [id], onDelete: Restrict)
+  authorId     String
+  author       User          @relation("TaskAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+  taskMappings TaskMapping[]
+  comments     Comment[]
+  attachments  Attachment[]
+  boardId      String?
+}
+
+// Many-to-many mapping between users and assigned tasks
+model TaskMapping {
+  id        String   @id @default(cuid(2))
+  userId    String
+  taskId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, taskId])
+}
+
+// Task comments
+model Comment {
+  id        String   @id @default(cuid(2))
+  content   String
+  taskId    String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Attachment {
+  id           String  @id @default(cuid(2))
+  fileURL      String
+  fileName     String?
+  taskId       String
+  uploadedById String
+  task         Task    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  uploadedBy   User    @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
+}
