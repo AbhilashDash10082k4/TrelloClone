@@ -6,6 +6,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { Router } from "express";
 import projectRoutes from "../src/projects/project.router";
+import orgRoutes from "../src/orgs/orgs.router";
 dotenv.config();
 
 const app = express();
@@ -15,13 +16,13 @@ app.use(bodyParser.urlencoded());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(cors());
-const apiRoutes = Router();
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello" });
 });
 
 app.use("/projects", projectRoutes);
+app.use("/orgs", orgRoutes);
 
 const port = process.env.PORT || 3000;
 
