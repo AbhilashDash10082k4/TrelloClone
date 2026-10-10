@@ -19,8 +19,5 @@ export class OrgService {
   async getAllOrgs() {
     return db.orm.public.Org.all();
   }
-  async getAllOrgProjects(orgId: string) {
-    return db.orm.public.Project.where({ orgId }).all();
-  }
 }
 export default new OrgService();

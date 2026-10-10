@@ -52,16 +52,5 @@ export class OrgController {
       res.status(500).json({ message: error });
     }
   }
-  async getAllOrgProjects(req: Request, res: Response) {
-    try {
-      const { orgId } = req.params;
-      const projects = await orgService.getAllOrgProjects(orgId as string);
-      return res.status(200).json({ success: true, data: projects });
-    } catch {
-      return res
-        .status(500)
-        .json({ message: "Failed to fetch organization projects" });
-    }
-  }
 }
 export default new OrgController();
