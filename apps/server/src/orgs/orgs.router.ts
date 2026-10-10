@@ -1,6 +1,9 @@
 import { Router } from "express";
-import orgController from "./orgs.controller";
-const router = Router();
-router.get("/", orgController.getAllOrgs);
-router.post("/", orgController.createOrg);
+import orgsController from "./orgs.controller";
+const router = Router({ mergeParams: true });
+
+router.get("/orgs", orgsController.getAllOrgs);
+router.post("/org", orgsController.createOrg);
+
+router.get("/:orgId/projects", orgsController.getAllOrgProjects);
 export default router;

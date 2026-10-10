@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/projects", projectRoutes);
-app.use("/orgs", orgRoutes);
+app.use("/", orgRoutes);
 
 const port = process.env.PORT || 3000;
 

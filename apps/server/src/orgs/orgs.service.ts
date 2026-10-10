@@ -1,5 +1,4 @@
 import { db } from "@repo/db";
-import { Temporal } from "temporal-polyfill";
 
 interface DTO {
   name: string;
@@ -14,6 +13,9 @@ export class OrgService {
       name: data.name,
       description: data.description,
     });
+  }
+  async getAllOrgProjects(orgId: string) {
+    return db.orm.public.Project.where({ orgId }).all();
   }
 }
 export default new OrgService();
