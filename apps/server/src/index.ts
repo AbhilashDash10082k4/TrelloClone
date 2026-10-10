@@ -21,8 +21,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello" });
 });
 
-app.use("/projects", projectRoutes);
-app.use("/", orgRoutes);
+app.use("/api/v1/:orgId/projects", projectRoutes);
+app.use("/api/v1/orgs", orgRoutes);
 
 const port = process.env.PORT || 3000;
 
