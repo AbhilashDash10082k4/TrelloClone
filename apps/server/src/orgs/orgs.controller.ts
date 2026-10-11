@@ -1,13 +1,18 @@
 import { Request, Response, NextFunction } from "express";
 import orgService from "./orgs.service";
 import { Temporal } from "temporal-polyfill";
+import { createOrgSchema } from "../validation/schemas";
+import z from "zod";
 
 export class OrgController {
   async createOrg(req: Request, res: Response) {
-    const { name, description } = req.body;
-    const data = { name, description };
+    //req from frontend
+    const data = res.locals.validatedBody as z.infer<typeof createOrgSchema>;
+
+    const userId = res.locals.localUserId as string;
+
     try {
-      await orgService.createOrg(data);
+      await orgService.createOrg(userId, data);
       res.status(201).json({ message: data });
     } catch (error: any) {
       res
@@ -44,9 +49,10 @@ export class OrgController {
       return next(error);
     }
   }
-  async getAllOrgs(req: Request, res: Response) {
+  async getAllOrgsForUser(req: Request, res: Response) {
     try {
-      const orgs = await orgService.getAllOrgs();
+      const userId = res.locals.localUserId as string;
+      const orgs = await orgService.getAllOrgsForUser(userId);
       res.status(200).json({ success: true, data: orgs });
     } catch (error) {
       res.status(500).json({ message: error });

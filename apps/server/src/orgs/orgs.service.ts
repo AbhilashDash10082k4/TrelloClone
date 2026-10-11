@@ -1,14 +1,25 @@
 import { db } from "@repo/db";
+import { AppError } from "../errors/AppError";
 
-interface DTO {
+interface OrgDTO {
   name: string;
-  description?: string;
+  description: string;
 }
 export class OrgService {
-  async createOrg(data: DTO) {
-    return db.orm.public.Org.create({
-      name: data.name,
-      description: data.description,
+  async createOrg(userId: string, data: OrgDTO) {
+    return db.transaction(async (tx) => {
+      const org = await tx.orm.public.Org.create({
+        name: data.name,
+        description: data.description ?? null,
+      });
+
+      await tx.orm.public.OrgMember.create({
+        role: "ADMIN",
+        user: (user) => user.connect({ id: userId }),
+        org: (relation) => relation.connect({ id: org.id }),
+      });
+
+      return org;
     });
   }
   async getOrgById(orgId: string) {
@@ -16,8 +27,19 @@ export class OrgService {
 
     return orgs[0] ?? null;
   }
-  async getAllOrgs() {
-    return db.orm.public.Org.all();
+  //gets org memberships about a single user and not all the memberships records
+  async getAllOrgsForUser(userId: string) {
+    const memberships = await db.orm.public.OrgMember.where({ userId })
+      .include("org")
+      .all();
+    if (memberships.length === 0) {
+      throw new AppError(
+        403,
+        "ORG_ACCESS_DENIED",
+        "You do not have access to this organization",
+      );
+    }
+    return memberships.map((membership) => membership.org);
   }
 }
 export default new OrgService();
