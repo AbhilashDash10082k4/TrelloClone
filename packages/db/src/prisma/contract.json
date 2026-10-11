@@ -1246,6 +1246,13 @@
           },
           "User": {
             "fields": {
+              "clerkUserId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "createdAt": {
                 "nullable": false,
                 "type": {
@@ -1383,6 +1390,9 @@
             },
             "storage": {
               "fields": {
+                "clerkUserId": {
+                  "column": "clerkUserId"
+                },
                 "createdAt": {
                   "column": "createdAt"
                 },
@@ -2280,6 +2290,11 @@
             },
             "User": {
               "columns": {
+                "clerkUserId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "createdAt": {
                   "codecId": "pg/timestamptz-temporal@1",
                   "nativeType": "timestamptz",
@@ -2322,6 +2337,11 @@
                 {
                   "columns": [
                     "email"
+                  ]
+                },
+                {
+                  "columns": [
+                    "clerkUserId"
                   ]
                 }
               ]
@@ -2373,7 +2393,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "817cb0390fac6f55c2d505b3c1eda25b395330adb13b608b585b58d42c6f960f"
+    "storageHash": "da4bfd2a58404bc3d38f9fb2223066fd97a22b9f690d83d9f6e723ccee4f3f2a"
   },
   "execution": {
     "executionHash": "9cb81ff7d93ed2ff1f85553a9b7790ed60f880165215730eeeb5479b843ba751",

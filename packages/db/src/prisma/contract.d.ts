@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'817cb0390fac6f55c2d505b3c1eda25b395330adb13b608b585b58d42c6f960f'>;
+  StorageHashBase<'da4bfd2a58404bc3d38f9fb2223066fd97a22b9f690d83d9f6e723ccee4f3f2a'>;
 export type ExecutionHash =
   ExecutionHashBase<'9cb81ff7d93ed2ff1f85553a9b7790ed60f880165215730eeeb5479b843ba751'>;
 export type ProfileHash =
@@ -329,6 +329,7 @@ export type FieldOutputTypes = {
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
     readonly User: {
+      readonly clerkUserId: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -419,6 +420,7 @@ export type FieldInputTypes = {
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
     readonly User: {
+      readonly clerkUserId: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -509,6 +511,7 @@ export type StorageColumnTypes = {
       readonly userId: CodecTypes['pg/text@1']['output'];
     };
     readonly User: {
+      readonly clerkUserId: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -599,6 +602,7 @@ export type StorageColumnInputTypes = {
       readonly userId: CodecTypes['pg/text@1']['input'];
     };
     readonly User: {
+      readonly clerkUserId: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -723,6 +727,7 @@ export namespace Models {
     readonly [RelationKeys]?: 'task' | 'user';
   };
   export type public_User = {
+    clerkUserId: CodecTypes['pg/text@1']['output'] | null;
     createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     email: CodecTypes['pg/text@1']['output'];
     id: CodecTypes['pg/text@1']['output'];
@@ -1439,6 +1444,11 @@ type ContractBase = Omit<
             };
             readonly User: {
               columns: {
+                readonly clerkUserId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                };
                 readonly createdAt: {
                   readonly nativeType: 'timestamptz';
                   readonly codecId: 'pg/timestamptz-temporal@1';
@@ -1471,7 +1481,10 @@ type ContractBase = Omit<
                 };
               };
               primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [{ readonly columns: readonly ['email'] }];
+              uniques: readonly [
+                { readonly columns: readonly ['email'] },
+                { readonly columns: readonly ['clerkUserId'] },
+              ];
               indexes: readonly [];
               foreignKeys: readonly [];
             };
@@ -2249,6 +2262,10 @@ type ContractBase = Omit<
           };
           readonly User: {
             readonly fields: {
+              readonly clerkUserId: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly createdAt: {
                 readonly nullable: false;
                 readonly type: {
@@ -2349,6 +2366,7 @@ type ContractBase = Omit<
               readonly table: 'User';
               readonly namespaceId: 'public';
               readonly fields: {
+                readonly clerkUserId: { readonly column: 'clerkUserId' };
                 readonly createdAt: { readonly column: 'createdAt' };
                 readonly email: { readonly column: 'email' };
                 readonly id: { readonly column: 'id' };
