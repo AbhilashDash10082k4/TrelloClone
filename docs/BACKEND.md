@@ -1,15 +1,9 @@
 **Architecture -> Frontend -> API call -> Controller -> Service -> Repository -> DB**
-
-1. Health check endpoint
-2. `packages/controllers`
-   - projectController -
-   - const projects = await prisma.find.many()
-   - return res.json(projects)
-
-3. `packages/services`-
-   - const router = Router();
-     router.get("/", projectController)
-     index.ts-
-   - app.use("/projects", projectRouter)
-
-4. `packages/repository`
+Method Endpoint Purpose
+GET /api/v1/orgs List organizations the current user belongs to
+POST /api/v1/orgs Create an organization and add the creator as admin
+GET /api/v1/orgs/:orgId Fetch one accessible organization
+GET /api/v1/orgs/:orgId/projects List projects in an accessible organization
+POST /api/v1/orgs/:orgId/projects Create a project in an accessible organization
+GET /api/v1/orgs/:orgId/projects/:projectId Fetch one project, ensuring it belongs to that organization
+GET /api/v1/projects/:projectId Optional direct project lookup, still authorization-protected
