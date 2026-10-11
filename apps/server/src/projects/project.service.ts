@@ -4,8 +4,8 @@ import { Temporal } from "temporal-polyfill";
 interface ProjectDTO {
   title: string;
   description: string;
-  startDate: Temporal.Instant;
-  endDate: Temporal.Instant;
+  startDate?: Temporal.Instant | null;
+  endDate?: Temporal.Instant | null;
 }
 export class ProjectService {
   async createProjectForOrg(orgId: string, data: ProjectDTO) {

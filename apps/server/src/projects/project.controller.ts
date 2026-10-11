@@ -1,18 +1,21 @@
 import { Request, Response, NextFunction } from "express";
 import projectService from "./project.service";
 import { Temporal } from "temporal-polyfill";
+import { createProjectSchema } from "../validation/schemas";
+import z from "zod";
 
 export class ProjectController {
   async createProjectForOrg(req: Request, res: Response) {
     try {
       // TODO: authenticate the user and verify org membership first
 
-      const { title, description, startDate, endDate } = req.body;
+      const { title, description, startDate, endDate } = res.locals
+        .validatedBody as z.infer<typeof createProjectSchema>;
       const data = {
         title,
         description,
-        startDate: Temporal.Instant.from(startDate),
-        endDate: Temporal.Instant.from(endDate),
+        startDate: startDate ? Temporal.Instant.from(startDate) : null,
+        endDate: endDate ? Temporal.Instant.from(endDate) : null,
       };
       const { orgId, projectId } = req.params;
       if (typeof title !== "string" || !title.trim()) {
