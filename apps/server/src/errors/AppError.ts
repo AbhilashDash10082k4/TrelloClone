@@ -1,0 +1,12 @@
+//class AppError behaves like Error
+export class AppError extends Error {
+  constructor(
+    public statusCode: number,
+    public code: string,
+    message: string,
+    public details?: unknown,
+  ) {
+    super(message); //initialize the parent error with the msg
+    this.name = "AppError";
+  }
+}
