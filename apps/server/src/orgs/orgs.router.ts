@@ -4,6 +4,9 @@ import projectRoutes from "../projects/project.router";
 import { createOrgSchema } from "../validation/schemas";
 import { validateBody } from "../middleware/validate";
 import { requireUser } from "../middleware/require-user";
+import { requireOrgMember } from "../middleware/require-org-member";
+import { requireOrgRole } from "../middleware/require-org-role";
+import { writeLimiter } from "../middleware/rate-limit";
 /**
  * @openapi
  * /orgs:
@@ -32,9 +35,19 @@ import { requireUser } from "../middleware/require-user";
  *         description: Authentication required
  */
 const router = Router({ mergeParams: true });
-router.use(requireUser);
+router.use(requireUser); // verify user and resolve their local record
 router.get("/", orgsController.getAllOrgsForUser);
-router.post("/", validateBody(createOrgSchema), orgsController.createOrg);
-router.get("/:orgId", orgsController.getOrgById);
+router.post(
+  "/",
+  writeLimiter,
+  validateBody(createOrgSchema),
+  orgsController.createOrg,
+);
+
+// All routes under /:orgId require membership.
+// This also protects the nested project router mounted below.
+router.use("/:orgId", requireOrgMember);
+router.delete("/:orgId", requireOrgRole("ADMIN"), orgsController.deleteOrg);
+router.get("/:orgId", orgsController.getOrgById); //requireOrgMember -> used in routes scoped to existing org
 router.use("/:orgId/projects", projectRoutes); //project related functionalities should happen inside an org
 export default router;

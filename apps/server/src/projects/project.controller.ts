@@ -3,12 +3,11 @@ import projectService from "./project.service";
 import { Temporal } from "temporal-polyfill";
 import { createProjectSchema } from "../validation/schemas";
 import z from "zod";
+import { AppError } from "../errors/AppError";
 
 export class ProjectController {
-  async createProjectForOrg(req: Request, res: Response) {
+  async createProjectForOrg(req: Request, res: Response, next: NextFunction) {
     try {
-      // TODO: authenticate the user and verify org membership first
-
       const { title, description, startDate, endDate } = res.locals
         .validatedBody as z.infer<typeof createProjectSchema>;
       const data = {
@@ -17,7 +16,7 @@ export class ProjectController {
         startDate: startDate ? Temporal.Instant.from(startDate) : null,
         endDate: endDate ? Temporal.Instant.from(endDate) : null,
       };
-      const { orgId, projectId } = req.params;
+      const { orgId } = req.params;
       if (typeof title !== "string" || !title.trim()) {
         return res.status(400).json({
           message: "title is required",
@@ -29,14 +28,12 @@ export class ProjectController {
       );
       res.status(201).json({ message: project });
     } catch (error: any) {
-      res
-        .status(400)
-        .json({ message: `Error creating project: ${error.message}` });
+      return next(error);
     }
   }
   async getProjectById(req: Request, res: Response, next: NextFunction) {
     try {
-      const { orgId, projectId } = req.params;
+      const { orgId, projectId } = res.locals.validatedParams;
       const project = await projectService.getProjectById(
         orgId as string,
         projectId as string,
@@ -62,16 +59,21 @@ export class ProjectController {
       return next(error);
     }
   }
-  async getAllProjectsByOrg(req: Request, res: Response) {
+  async getAllProjectsByOrg(req: Request, res: Response, next: NextFunction) {
     // TODO: authenticate the user and verify org membership firs
     try {
       const { orgId } = req.params;
       const projects = await projectService.getAllProjectsByOrg(
         orgId as string,
       );
+      if (!projects) {
+        return next(
+          new AppError(404, "PROJECT_UNAVAILABLE", "No projects, create one"),
+        );
+      }
       res.status(200).json({ success: true, data: projects });
     } catch (error) {
-      res.status(500).json({ message: error });
+      return next(error);
     }
   }
 }

@@ -32,13 +32,6 @@ export class OrgService {
     const memberships = await db.orm.public.OrgMember.where({ userId })
       .include("org")
       .all();
-    if (memberships.length === 0) {
-      throw new AppError(
-        403,
-        "ORG_ACCESS_DENIED",
-        "You do not have access to this organization",
-      );
-    }
     return memberships.map((membership) => membership.org);
   }
 }

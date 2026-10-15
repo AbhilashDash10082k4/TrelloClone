@@ -1,23 +1,27 @@
 import { Request, Response, NextFunction } from "express";
 import orgService from "./orgs.service";
-import { Temporal } from "temporal-polyfill";
 import { createOrgSchema } from "../validation/schemas";
 import z from "zod";
 
 export class OrgController {
-  async createOrg(req: Request, res: Response) {
-    //req from frontend
-    const data = res.locals.validatedBody as z.infer<typeof createOrgSchema>;
-
-    const userId = res.locals.localUserId as string;
-
+  async createOrg(req: Request, res: Response, next: NextFunction) {
     try {
-      await orgService.createOrg(userId, data);
-      res.status(201).json({ message: data });
-    } catch (error: any) {
-      res
-        .status(400)
-        .json({ message: `Error creating project: ${error.message}` });
+      //req from frontend
+      const data = res.locals.validatedBody as z.infer<typeof createOrgSchema>;
+
+      const userId = res.locals.localUserId as string;
+      if (!userId) {
+        return res.status(404).json({
+          error: {
+            code: "USER_NOT_FOUND",
+            message: "User not found",
+          },
+        });
+      }
+      const org = await orgService.createOrg(userId, data);
+      res.status(201).json({ data: org });
+    } catch (error) {
+      return next(error);
     }
   }
   async getOrgById(req: Request, res: Response, next: NextFunction) {
@@ -49,13 +53,21 @@ export class OrgController {
       return next(error);
     }
   }
-  async getAllOrgsForUser(req: Request, res: Response) {
+  async getAllOrgsForUser(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = res.locals.localUserId as string;
       const orgs = await orgService.getAllOrgsForUser(userId);
+      if (!orgs) {
+        return res.status(404).json({
+          error: {
+            code: "ORG_NOT_FOUND",
+            message: "Organizations for user not found",
+          },
+        });
+      }
       res.status(200).json({ success: true, data: orgs });
     } catch (error) {
-      res.status(500).json({ message: error });
+      return next(error);
     }
   }
 }
