@@ -30,3 +30,16 @@ export const createProjectSchema = z
       });
     }
   });
+export const orgParamsSchema = z.object({
+  orgId: z.string().min(1).max(100),
+});
+
+export const projectParamsSchema = z.object({
+  orgId: z.string().min(1).max(100),
+  projectId: z.string().min(1).max(100),
+});
+
+export const paginationSchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(20),
+});
