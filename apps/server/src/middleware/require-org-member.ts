@@ -3,27 +3,28 @@ import { db } from "@repo/db";
 import userService from "../users/user.service";
 import { AppError } from "../errors/AppError";
 
-export const requireOrgMember: RequestHandler = async (req, res, next) => {
+export const requireOrgMember: RequestHandler<{ orgId: string }> = async (
+  req,
+  res,
+  next,
+) => {
   try {
     const { orgId } = req.params;
-    const clerkUserId = res.locals.clerkUserId as string;
-
+    const localUserId = res.locals.localUserId as string | undefined;
     if (!orgId) {
       throw new AppError(400, "INVALID_ORG_ID", "Organization ID is required");
     }
 
-    const user = await userService.getByClerkId(clerkUserId);
-
-    if (!user) {
+    if (!orgId || !localUserId) {
       throw new AppError(
-        409,
-        "USER_PROFILE_NOT_SYNCED",
-        "User profile is not ready",
+        400,
+        "INVALID_PARAMETERS",
+        "Organization ID is required",
       );
     }
 
     const memberships = await db.orm.public.OrgMember.where({
-      userId: user.id,
+      userId: localUserId,
       orgId,
     }).all();
 
@@ -36,7 +37,6 @@ export const requireOrgMember: RequestHandler = async (req, res, next) => {
     }
 
     //res.locals -> Express object that stores req data required by other middlewares
-    res.locals.localUserId = user.id; //store localId given by the DB
     res.locals.orgMembership = memberships[0];
     next();
   } catch (error) {
