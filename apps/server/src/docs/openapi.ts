@@ -18,5 +18,5 @@ export const openapiSpec = swaggerJsdoc({
       },
     },
   },
-  apis: ["./src/**/*.router.ts"],
+  apis: ["./src/docs/routes/*.openapi.ts"],
 });
