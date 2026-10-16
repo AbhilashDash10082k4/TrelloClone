@@ -1,7 +1,10 @@
 import { Router } from "express";
 import orgsController from "./orgs.controller";
 import projectRoutes from "../projects/project.router";
-import { createOrgSchema } from "../validation/schemas";
+import {
+  createOrgSchema,
+  deleteConfirmationSchema,
+} from "../validation/schemas";
 import { validateBody } from "../middleware/validate";
 import { requireUser } from "../middleware/require-user";
 import { requireOrgMember } from "../middleware/require-org-member";
@@ -47,7 +50,12 @@ router.post(
 // All routes under /:orgId require membership.
 // This also protects the nested project router mounted below.
 router.use("/:orgId", requireOrgMember);
-router.delete("/:orgId", requireOrgRole("ADMIN"), orgsController.deleteOrg);
+router.delete(
+  "/:orgId",
+  requireOrgRole("ADMIN"),
+  validateBody(deleteConfirmationSchema),
+  orgsController.deleteOrg,
+);
 router.get("/:orgId", orgsController.getOrgById); //requireOrgMember -> used in routes scoped to existing org
 router.use("/:orgId/projects", projectRoutes); //project related functionalities should happen inside an org
 export default router;

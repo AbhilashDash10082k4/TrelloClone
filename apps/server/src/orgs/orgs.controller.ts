@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import orgService from "./orgs.service";
-import { createOrgSchema } from "../validation/schemas";
+import {
+  createOrgSchema,
+  deleteConfirmationSchema,
+} from "../validation/schemas";
 import z from "zod";
+import { AppError } from "../errors/AppError";
 
 export class OrgController {
   async createOrg(req: Request, res: Response, next: NextFunction) {
@@ -66,6 +70,33 @@ export class OrgController {
         });
       }
       res.status(200).json({ success: true, data: orgs });
+    } catch (error) {
+      return next(error);
+    }
+  }
+  async deleteOrg(req: Request, res: Response, next: NextFunction) {
+    try {
+      const orgId = req.params.orgId;
+
+      if (typeof orgId !== "string") {
+        throw new AppError(
+          400,
+          "INVALID_ORG_ID",
+          "A valid organization ID is required",
+        );
+      }
+
+      const userId = res.locals.localUserId as string;
+      const { confirmName } = res.locals.validatedBody as z.infer<
+        typeof deleteConfirmationSchema
+      >;
+
+      const deleted = await orgService.deleteOrg(orgId, userId, confirmName);
+
+      return res.status(200).json({
+        data: deleted,
+        message: "Organization deleted",
+      });
     } catch (error) {
       return next(error);
     }
