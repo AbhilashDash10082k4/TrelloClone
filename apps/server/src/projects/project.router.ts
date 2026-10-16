@@ -3,9 +3,11 @@ import projectController from "./project.controller";
 import { validateBody, validateParams } from "../middleware/validate";
 import {
   createProjectSchema,
+  deleteConfirmationSchema,
   projectParamsSchema,
 } from "../validation/schemas";
 import { writeLimiter } from "../middleware/rate-limit";
+import { requireOrgRole } from "../middleware/require-org-role";
 
 const router = Router({ mergeParams: true });
 
@@ -21,5 +23,10 @@ router.get(
   validateParams(projectParamsSchema),
   projectController.getProjectById,
 );
-
+router.delete(
+  "/:projectId",
+  requireOrgRole("ADMIN"),
+  validateBody(deleteConfirmationSchema),
+  projectController.deleteProject,
+);
 export default router;
